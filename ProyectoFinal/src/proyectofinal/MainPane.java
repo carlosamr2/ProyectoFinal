@@ -5,6 +5,8 @@
  */
 package proyectofinal;
 
+import classes.FileReader;
+import classes.FileWritter;
 import java.io.File;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -18,7 +20,7 @@ import javafx.stage.Stage;
  *
  * @author Carlos
  */
-public class ProyectoFinal extends Application {
+public class MainPane extends Application {
     
     @Override
     public void start(Stage primaryStage) {
@@ -31,7 +33,7 @@ public class ProyectoFinal extends Application {
             
             @Override
             public void handle(ActionEvent event) {
-                System.out.println(reader.texto);
+//                System.out.println(reader.texto);
                 escribir.create();
                 escribir.write("hola mundo");
                 

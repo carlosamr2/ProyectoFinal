@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package proyectofinal;
+package classes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,7 +22,7 @@ public class FileReader {
     
     private String read(final File myObj) {
         String data = "";
-        try {
+        try {     
             final Scanner myReader = new Scanner(myObj);
             while (myReader.hasNextLine()) {
                 final String line = myReader.nextLine();
