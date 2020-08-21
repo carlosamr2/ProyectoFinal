@@ -7,6 +7,8 @@ package classes;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -20,7 +22,10 @@ public class FileReader {
         this.texto = this.read(myObj);
     }
     
-    private String read(final File myObj) {
+    private String read(final File myObj) {  
+        Map<Integer,String> a = new HashMap<>();
+        
+        
         String data = "";
         try {     
             final Scanner myReader = new Scanner(myObj);
@@ -36,4 +41,7 @@ public class FileReader {
         }
         return data;
     }
+    
+
+    
 }

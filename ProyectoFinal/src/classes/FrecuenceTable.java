@@ -13,23 +13,23 @@ public class FrecuenceTable {
 
     private boolean sense; //Sentido de la codificación - Normal => true, Inversa => false
     private String text; //Texto de referencia para generar la tabla de frecuencia
-    private Map<Character, Integer> frecuency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
+    private Map<String, Integer> frecuency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
     private PriorityQueue<Symbol> priority;//Contenedor que almacenará las instancias ordenadas de la clase Symbol
 
     public FrecuenceTable(boolean sense, String text) {
-        this.sense = true;
+        this.sense = sense;
         this.text = text;
         frecuency = fillFrecuency();
         priority = fillPriority();
     }
 
-    private Map<Character, Integer> fillFrecuency() { //Llena el mapa frecuency
-        Map<Character, Integer> m = new HashMap<>();
+    private Map<String, Integer> fillFrecuency() { //Llena el mapa frecuency
+        Map<String, Integer> m = new HashMap<>();
         for (int i = 0; i < text.length(); i++) {
-            if (m.containsKey(text.charAt(i))) {
-                m.put(text.charAt(i), m.get(text.charAt(i)) + 1);
+            if (m.containsKey(String.valueOf(text.charAt(i)))) {
+                m.put(String.valueOf(text.charAt(i)), m.get(String.valueOf(text.charAt(i))) + 1);
             } else {
-                m.put(text.charAt(i), 1);
+                m.put(String.valueOf(text.charAt(i)), 1);
             }
         }
         return m;
@@ -39,15 +39,15 @@ public class FrecuenceTable {
         PriorityQueue<Symbol> p = new PriorityQueue<>((c1, c2) -> {
             if (sense == true ) {
                 if (c2.getAmount() != c1.getAmount()) {
-                    return c1.getAmount() - c2.getAmount(); //Ordena los elementos con respecto a su cantidad de manera desccendente
+                    return c1.getAmount() - c2.getAmount(); //Ordena los elementos con respecto a su cantidad de manera asccendente
                 } else {
-                    return String.valueOf(c1.getSign()).compareTo(String.valueOf(c2.getSign()));  //Si tienen igual cantidad de repeticiones, se considera el caracter
+                    return c1.getSign().compareTo(c2.getSign());  //Si tienen igual cantidad de repeticiones, se considera el caracter
                 }
             } else {
                 if (c2.getAmount() != c1.getAmount()) {
-                    return c2.getAmount() - c1.getAmount(); //Ordena los elementos con respecto a su cantidad de manera ascendente
+                    return c2.getAmount() - c1.getAmount(); //Ordena los elementos con respecto a su cantidad de manera descendente
                 } else {
-                    return String.valueOf(c1.getSign()).compareTo(String.valueOf(c2.getSign())); //Si tienen igual cantidad de repeticiones, se considera el caracter
+                    return c1.getSign().compareTo(c2.getSign()); //Si tienen igual cantidad de repeticiones, se considera el caracter
                 }
             }
         });
@@ -74,11 +74,11 @@ public class FrecuenceTable {
         this.text = text;
     }
 
-    public Map<Character, Integer> getFrecuency() {
+    public Map<String, Integer> getFrecuency() {
         return frecuency;
     }
 
-    public void setFrecuency(Map<Character, Integer> FRECUENCY) {
+    public void setFrecuency(Map<String, Integer> FRECUENCY) {
         this.frecuency = FRECUENCY;
     }
 

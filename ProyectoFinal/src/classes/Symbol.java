@@ -10,19 +10,21 @@ package classes;
  * @author Bryan
  */
 public class Symbol {
-    private char sign;
+    private String sign;
     private int amount;
+    private String code;
 
-    public Symbol(char sign, int amount) {
+    public Symbol(String sign, int amount) {
         this.sign = sign;
         this.amount = amount;
+        this.code = "";
     }
 
-    public char getSign() {
+    public String getSign() {
         return sign;
     }
 
-    public void setSign(char sign) {
+    public void setSign(String sign) {
         this.sign = sign;
     }
 
@@ -32,6 +34,14 @@ public class Symbol {
 
     public void setAmount(int amount) {
         this.amount = amount;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
 
