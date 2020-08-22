@@ -10,9 +10,10 @@ package classes;
  * @author Bryan
  */
 public class Symbol {
-    private String sign;
-    private int amount;
-    private String code;
+
+    private String sign; //Caracter
+    private int amount; //Cantidad de repeticiones del caracter dentro del String
+    private String code; //Código que representa al caracter
 
     public Symbol(String sign, int amount) {
         this.sign = sign;
@@ -44,13 +45,9 @@ public class Symbol {
         this.code = code;
     }
 
-
     @Override
     public String toString() {
-        return "Code{" + "caracter=" + sign + ", rep=" + amount + '}';
+        return sign + ":     " + amount;
     }
-    
-    
-    
-    
+
 }

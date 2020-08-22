@@ -1,11 +1,11 @@
 package tdas;
 
-public class BinaryNode<T> implements Comparable<BinaryNode<T>>{
-    
+public class BinaryNode<T> implements Comparable<BinaryNode<T>> {
+
     private T content;
     private BinaryTree<T> left;
     private BinaryTree<T> right;
-    
+
     public BinaryNode() {
         this(null, null, null);
     }
@@ -46,12 +46,13 @@ public class BinaryNode<T> implements Comparable<BinaryNode<T>>{
 
     @Override
     public int compareTo(BinaryNode<T> t) {
-        if(Integer.parseInt(this.getContent().toString()) > Integer.parseInt(t.getContent().toString()))
+        if (Integer.parseInt(this.getContent().toString()) > Integer.parseInt(t.getContent().toString())) {
             return 1;
-        else if(Integer.parseInt(this.getContent().toString()) < Integer.parseInt(t.getContent().toString()))
+        } else if (Integer.parseInt(this.getContent().toString()) < Integer.parseInt(t.getContent().toString())) {
             return -1;
-        else
+        } else {
             return 0;
+        }
     }
-    
+
 }

@@ -16,9 +16,9 @@ public class BinaryTree<T> {
     public BinaryTree(T content) {
         this.root = new BinaryNode<>(content);
     }
-    
-    public BinaryTree(BinaryNode<T> root){
-        this.root =root;
+
+    public BinaryTree(BinaryNode<T> root) {
+        this.root = root;
     }
 
     public BinaryNode<T> getRoot() {
@@ -51,6 +51,30 @@ public class BinaryTree<T> {
 
     public boolean isLeaf() {
         return this.root.getLeft() == null && this.root.getRight() == null;
+    }
+
+    public Stack<T> getLeaves() { //Retorna una pila con los nodos hojas del arbol
+        Stack<BinaryTree<T>> stack = new Stack();
+        Stack<T> leaves = new Stack();
+        int count = 0;
+        if (this.isEmpty()) {
+            return null;
+        } else {
+            stack.push(this);
+            while (!stack.empty()) {
+                BinaryTree<T> subtree = stack.pop();
+                if (subtree.root.getLeft() != null) {
+                    stack.push(subtree.root.getLeft());
+                }
+                if (subtree.root.getRight() != null) {
+                    stack.push(subtree.root.getRight());
+                }
+                if (subtree.isLeaf()) {
+                    leaves.push(subtree.getRoot().getContent());
+                }
+            }
+        }
+        return leaves;
     }
 
     public int countLeavesRecursive() {
@@ -147,7 +171,7 @@ public class BinaryTree<T> {
         }
     }
 
-public void printIterativeInordenBinary(){
+    public void printIterativeInordenBinary() {
 //        if (!this.isEmpty()) {
 //            Stack<BinaryTree<T>> sTrees = new Stack<>();
 //            sTrees.push(this);
@@ -164,7 +188,7 @@ public void printIterativeInordenBinary(){
 //        }
     }
 
-public void printRecursivePreordenBinary(BinaryTree node) {
+    public void printRecursivePreordenBinary(BinaryTree node) {
         if (node != null) {
             System.out.print(node.root.getContent() + "  ");
             printRecursivePreordenBinary(node.getLeft());
@@ -217,9 +241,8 @@ public void printRecursivePreordenBinary(BinaryTree node) {
             }
         }
     }
-    
+
     //----------------------------------------------------HOMEWORK----------------------------------------------------------------------------------------
-    
     //1. Implemente el método getMin que, dado un árbol de enteros, 
     //   encuentre el nodo que almacena el menor de los números.
     //Recursive
@@ -229,23 +252,29 @@ public void printRecursivePreordenBinary(BinaryTree node) {
             if (root.getLeft() != null || root.getRight() != null) {
                 BinaryNode<T> currentNode = null;
                 if (root.getLeft() != null) {
-                    if (root.getLeft().root.compareTo(minValueNode) == -1) 
-                        minValueNode = this.root.getLeft().root; 
-                    if (!root.getLeft().isLeaf()) 
+                    if (root.getLeft().root.compareTo(minValueNode) == -1) {
+                        minValueNode = this.root.getLeft().root;
+                    }
+                    if (!root.getLeft().isLeaf()) {
                         currentNode = this.root.getLeft().getMinRecursive();
+                    }
                     if (currentNode != null) {
-                        if (currentNode.compareTo(minValueNode) == -1) 
-                            minValueNode = currentNode;   
+                        if (currentNode.compareTo(minValueNode) == -1) {
+                            minValueNode = currentNode;
+                        }
                     }
                 }
                 if (root.getRight() != null) {
-                    if (root.getRight().root.compareTo(minValueNode) == -1) 
-                        minValueNode = this.root.getRight().root;         
-                    if (!root.getRight().isLeaf()) 
+                    if (root.getRight().root.compareTo(minValueNode) == -1) {
+                        minValueNode = this.root.getRight().root;
+                    }
+                    if (!root.getRight().isLeaf()) {
                         currentNode = root.getRight().getMinRecursive();
+                    }
                     if (currentNode != null) {
-                        if (currentNode.compareTo(minValueNode) == -1) 
+                        if (currentNode.compareTo(minValueNode) == -1) {
                             minValueNode = currentNode;
+                        }
                     }
                 }
             }
@@ -255,6 +284,7 @@ public void printRecursivePreordenBinary(BinaryTree node) {
         }
 
     }
+
     //Iterative
     public BinaryNode<T> getMinIterative() {
         if (!this.isEmpty()) {
@@ -266,32 +296,35 @@ public void printRecursivePreordenBinary(BinaryTree node) {
                 if (currentTree.root.compareTo(min) == -1) {
                     min = currentTree.root;
                 } else {
-                    if (currentTree.root.getLeft() != null) 
+                    if (currentTree.root.getLeft() != null) {
                         deck.push(currentTree.root.getLeft());
-                    if (currentTree.root.getRight() != null) 
-                        deck.push(currentTree.root.getRight());    
+                    }
+                    if (currentTree.root.getRight() != null) {
+                        deck.push(currentTree.root.getRight());
+                    }
                 }
             }
             return min;
-        }
-        else{
+        } else {
             return null;
         }
     }
-    
+
     // 2. Implemente el método countLevels que calcule el número de niveles de árbol.
     //Considere que un árbol vacío tiene 0 niveles, mientras que un árbol hoja tiene 1 solo nivel.
-   // Recursive
+    // Recursive
     public int countLevelsRecursive() {
         if (!isEmpty()) {
             int count = 1;
             int countLeft = 0;
             int countRight = 0;
-            if (root.getLeft() != null ||root.getRight() != null) {
-                if (root.getLeft() != null) 
+            if (root.getLeft() != null || root.getRight() != null) {
+                if (root.getLeft() != null) {
                     countLeft = countLeft + root.getLeft().countLevelsRecursive();
-                if (root.getRight() != null) 
+                }
+                if (root.getRight() != null) {
                     countRight = countRight + root.getRight().countLevelsRecursive();
+                }
                 if (countRight > countLeft) {
                     count = count + countRight;
                 } else {
@@ -303,8 +336,9 @@ public void printRecursivePreordenBinary(BinaryTree node) {
             return 0;
         }
     }
+
     //Iterative
-        public int iterativeCountLevels(){
+    public int iterativeCountLevels() {
         Deque<BinaryTree<T>> deck = new ArrayDeque();
         int count = 0;
         if (this.isEmpty()) {
@@ -325,36 +359,38 @@ public void printRecursivePreordenBinary(BinaryTree node) {
         }
         return count;
     }
-       //3. Se dice que un árbol binario es zurdo si el árbol está vacío o es una hoja, 
-        //   o bien si sus hijos son ambos zurdos y tiene a más de la mitad de sus descendientes 
-        //  en el hijo izquierdo. Implementar el método isLefty que indique si un árbol binario es zurdo o no.
-        public int size() {
-            int size = 1;
-            if (this.root.getLeft() != null) {
-                size += this.root.getLeft().size();
-            }
-            if (this.root.getRight() != null) {
-                size += this.root.getRight().size();
-            }
-            return size;
+    //3. Se dice que un árbol binario es zurdo si el árbol está vacío o es una hoja, 
+    //   o bien si sus hijos son ambos zurdos y tiene a más de la mitad de sus descendientes 
+    //  en el hijo izquierdo. Implementar el método isLefty que indique si un árbol binario es zurdo o no.
+
+    public int size() {
+        int size = 1;
+        if (this.root.getLeft() != null) {
+            size += this.root.getLeft().size();
         }
-        
-           public boolean isLeftyIterative(){
-        if(this.isEmpty() || this.isLeaf() )
+        if (this.root.getRight() != null) {
+            size += this.root.getRight().size();
+        }
+        return size;
+    }
+
+    public boolean isLeftyIterative() {
+        if (this.isEmpty() || this.isLeaf()) {
             return true;
-        else {
+        } else {
             Deque<BinaryNode<T>> deck = new ArrayDeque<>();
-            while(!this.root.getLeft().isLeaf()){
+            while (!this.root.getLeft().isLeaf()) {
                 deck.push(this.getRoot());
-            
-            }  
+
+            }
             return this.countLevelsRecursive() == 1;
         }
     }
-        //4. Implemente el método isIdenticalRecursive que, dado un segundo árbol binario, 
-        //retorne true o false indicando sizeDeck dicho árbol es igual al que invoca el método (this).
-        // Recursive
-        public boolean isIdenticalRecursive(BinaryTree<T> n) {
+    //4. Implemente el método isIdenticalRecursive que, dado un segundo árbol binario, 
+    //retorne true o false indicando sizeDeck dicho árbol es igual al que invoca el método (this).
+    // Recursive
+
+    public boolean isIdenticalRecursive(BinaryTree<T> n) {
         boolean isEqualToLeft = false;
         boolean isEqualToRight = false;
         if (this.isEmpty() && n.isEmpty()) {
@@ -381,61 +417,64 @@ public void printRecursivePreordenBinary(BinaryTree node) {
                 return root.getContent().equals(n.getRoot().getContent());
             }
         }
-        boolean identical=isEqualToLeft && isEqualToRight;
+        boolean identical = isEqualToLeft && isEqualToRight;
         return identical;
-        } 
-        //5. Encontrar el valor más grande de cada nivel del árbol. 
-        //El método largestValueOfEachLevel debe imprimir el mayor valor presente 
-        //en cada nivel de un árbol binario cuyos nodos contienen números enteros.
-        //Recursive
-        public Deque<BinaryNode<T>> largestValueOfEachLevelRecursive(){
-        Deque<BinaryNode<T>> deck= new ArrayDeque<>();
-        if(this.isEmpty()){
+    }
+    //5. Encontrar el valor más grande de cada nivel del árbol. 
+    //El método largestValueOfEachLevel debe imprimir el mayor valor presente 
+    //en cada nivel de un árbol binario cuyos nodos contienen números enteros.
+    //Recursive
+
+    public Deque<BinaryNode<T>> largestValueOfEachLevelRecursive() {
+        Deque<BinaryNode<T>> deck = new ArrayDeque<>();
+        if (this.isEmpty()) {
             return null;
-        }else{
-           if(!this.isLeaf()){
-               deck.add(root);
-               Deque<BinaryNode<T>> deckLeft= new ArrayDeque<>(); 
-               Deque<BinaryNode<T>> deckRight= new ArrayDeque<>();
-               if(this.root.getLeft()!=null)
-                   deckLeft=this.root.getLeft().largestValueOfEachLevelRecursive();
-               else
-                   deckLeft.add(new BinaryNode(0));
-               if(this.root.getRight()!=null)
-                   deckRight=this.root.getRight().largestValueOfEachLevelRecursive();
-               else
-                   deckRight.add(new BinaryNode(0));
-               if(deckLeft.size()>deckRight.size()){
-                   int sizeDeck=deckLeft.size()-deckRight.size();
-                   for(int i=0;i<sizeDeck;i++)
-                      deckRight.add(new BinaryNode(0));
-               }else{
-                   int tam=deckRight.size()-deckLeft.size();
-                   for(int i=0;i<tam;i++){
-                      deckLeft.add(new BinaryNode(0));
-                   }
-               }
-               int size=deckLeft.size();
-               for(int i=0;i<size;i++){
-                    if(deckLeft.element().compareTo(deckRight.element())==1){
+        } else {
+            if (!this.isLeaf()) {
+                deck.add(root);
+                Deque<BinaryNode<T>> deckLeft = new ArrayDeque<>();
+                Deque<BinaryNode<T>> deckRight = new ArrayDeque<>();
+                if (this.root.getLeft() != null) {
+                    deckLeft = this.root.getLeft().largestValueOfEachLevelRecursive();
+                } else {
+                    deckLeft.add(new BinaryNode(0));
+                }
+                if (this.root.getRight() != null) {
+                    deckRight = this.root.getRight().largestValueOfEachLevelRecursive();
+                } else {
+                    deckRight.add(new BinaryNode(0));
+                }
+                if (deckLeft.size() > deckRight.size()) {
+                    int sizeDeck = deckLeft.size() - deckRight.size();
+                    for (int i = 0; i < sizeDeck; i++) {
+                        deckRight.add(new BinaryNode(0));
+                    }
+                } else {
+                    int tam = deckRight.size() - deckLeft.size();
+                    for (int i = 0; i < tam; i++) {
+                        deckLeft.add(new BinaryNode(0));
+                    }
+                }
+                int size = deckLeft.size();
+                for (int i = 0; i < size; i++) {
+                    if (deckLeft.element().compareTo(deckRight.element()) == 1) {
                         deck.add(deckLeft.remove());
                         deckRight.remove();
-                    }
-                    else{
+                    } else {
                         deck.add(deckRight.remove());
                         deckLeft.remove();
                     }
-               }
-           }else{
-               deck.add(root);
-               return deck;
-           }
+                }
+            } else {
+                deck.add(root);
+                return deck;
+            }
         }
         return deck;
-    }  
+    }
     //6. El método countNodesWithOnlyChildRecursive debe retornar el número de nodos de un árbol que
     //   tienen un solo hijo. 
-    
+
     //Recursive
     public int countNodesWithOnlyChildRecursive() {
         if (!this.isEmpty()) {
@@ -465,6 +504,7 @@ public void printRecursivePreordenBinary(BinaryTree node) {
             return 0;
         }
     }
+
     //Iterative
     public int countNodesWithOnlyChildIterative() {
         if (!this.isEmpty()) {
@@ -487,26 +527,27 @@ public void printRecursivePreordenBinary(BinaryTree node) {
             return 0;
         }
     }
+
     // 7. El método isHeightBalanced debe retornar si un árbol binario está balanceado en altura o
     //  no. Un árbol vacío está siempre balanceado en altura. Un árbol binario no vacío está
     //  balanceado si y solo si:
     //  1) Su subárbol izquierdo está balanceado,
     //  2) Su subárbol derecho está balanceado, y
     //  3) La diferencia entre las alturas de sus subárboles izquierdo y derecho es menor que 1.
-    public boolean isHeighBalancedRecursive(){
-        if(this.isEmpty())
+    public boolean isHeighBalancedRecursive() {
+        if (this.isEmpty()) {
             return true;
-        else{                
-            if(!(this.getLeft().size() == 1 && this.getRight().size() == 1)){
+        } else {
+            if (!(this.getLeft().size() == 1 && this.getRight().size() == 1)) {
                 this.getLeft().isHeighBalancedRecursive();
                 this.getRight().isHeighBalancedRecursive();
-            }else{
+            } else {
                 int dif = Math.abs(this.getLeft().size() - this.getRight().size());
-                if(dif > 1){
+                if (dif > 1) {
                     return false;
                 }
-            }     
-         }
+            }
+        }
         return true;
     }
 }
