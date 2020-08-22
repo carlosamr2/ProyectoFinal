@@ -48,32 +48,5 @@ public class Encryption {
         return text;
     }
 
-    public static void main(String[] args) {
 
-        String text = "El veloz murcielago hindu comia feliz cardillo y kiwi mientras la cigueña tocaba saxofon detras del palenque de paja";
-
-        FrequencyTable ft = new FrequencyTable(false, text);
-
-        EncriptedData ed = new EncriptedData(ft);
-        
-        //-----------------------------------------------------------------------------------------------
-        ed.getMapEnc().keySet().forEach((s) -> { //Muestra cada caracter con su respectivo código
-            System.out.println(s + ":   " + ed.getMapEnc().get(s));
-        });
-        //-----------------------------------------------------------------------------------------------
-      
-        Encryption e = new Encryption(ed);
-
-        String original = "puedo escribir los versos mas tristes esta noche escribir por ejemplo la noche esta estrellada y tritan azules los astros a lo lejos";
-
-        String enc = e.encode(original);
-
-        String dec = e.decode(enc);
-
-        System.out.println("Texto original: " + original);
-
-        System.out.println("Texto codificado: " + enc);
-
-        System.out.println("Texto decodificado: " + dec);
-    }
 }
