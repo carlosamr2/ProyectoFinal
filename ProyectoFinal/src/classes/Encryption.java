@@ -11,7 +11,7 @@ package classes;
  */
 public class Encryption {
 
-    private EncriptedData ed;
+    private final EncriptedData ed;
 
     public Encryption(EncriptedData ed) { //Recibe los mapas necesarios para la encriptación del string
         this.ed = ed;
@@ -43,10 +43,12 @@ public class Encryption {
                     code = code.substring(code.length() - 1);
                 }
             }
-
         }
         return text;
     }
 
-
+    public EncriptedData getEd() {
+        return ed;
+    }
+    
 }
