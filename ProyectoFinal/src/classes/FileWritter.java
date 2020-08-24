@@ -15,14 +15,18 @@ import java.io.IOException;
  */
 public class FileWritter {
         String fileName;
+        boolean exist;
     
     public FileWritter(final String fileName) {
         this.fileName = fileName;
+        created(); 
     }
     
-    public void create() {
+    private void created() {
         try {
+            
             final File myObj = new File(this.fileName);
+            this.exist = !myObj.createNewFile();
             if (myObj.createNewFile()) {
                 System.out.println("File created: " + myObj.getName());
             }
@@ -48,4 +52,11 @@ public class FileWritter {
             e.printStackTrace();
         }
     }
+
+    public boolean getExist() {
+        return exist;
+    }
+    
+    
+    
 }
