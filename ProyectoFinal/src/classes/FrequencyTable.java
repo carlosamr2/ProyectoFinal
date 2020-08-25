@@ -14,14 +14,16 @@ public class FrequencyTable {
 
     private boolean normalSense; //Sentido de la codificación - Normal => true, Inversa => false
     private String text; //Texto de referencia para generar la tabla de frecuencia
-    private Map<Character, Integer> frequency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
+    private final Map<Character, Integer> frequency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
     private PriorityQueue<BinaryNode<Symbol>> nodes;//Contenedor que almacenará las instancias ordenadas de la clase Symbol contenidas en un BinaryNode
+    private final PriorityQueue<Symbol> symbols;
 
     public FrequencyTable(boolean sense, String text) {
         this.normalSense = sense;
         this.text = text;
         frequency = fillFrecuency();
         nodes = fillNodes();
+        symbols = fillSymbols();
     }
 
     private Map<Character, Integer> fillFrecuency() { //Crea el mapa frequency
@@ -35,6 +37,20 @@ public class FrequencyTable {
         }
         return m;
     }
+    
+    private PriorityQueue<Symbol> fillSymbols(){
+        PriorityQueue<Symbol> pr = new PriorityQueue<>((a,b) -> {
+            if(a.getAmount() != b.getAmount())
+                return a.getAmount()-b.getAmount();
+            else
+                return a.getSign().compareTo(b.getSign());
+        });
+        this.frequency.keySet().forEach((c) -> {
+            pr.offer(new Symbol(String.valueOf(c), this.frequency.get(c)));
+        });
+        return pr;
+    }
+    
 
     private PriorityQueue<BinaryNode<Symbol>> fillNodes() { //Crea la cola nodes
         PriorityQueue<BinaryNode<Symbol>> p = new PriorityQueue<>((c1, c2) -> {
@@ -75,20 +91,20 @@ public class FrequencyTable {
         this.text = text;
     }
 
-        public Map<Character, Integer> getFrecuency() {
-        return frequency;
-    }
-
-    public void setFrecuency(Map<Character, Integer> FRECUENCY) {
-        this.frequency = FRECUENCY;
-    }
-
     public PriorityQueue<BinaryNode<Symbol>> getNodes() {
         return nodes;
     }
 
     public void setNodes(PriorityQueue<BinaryNode<Symbol>> nodes) {
         this.nodes = nodes;
+    }
+
+    public PriorityQueue<Symbol> getSymbols() {
+        return symbols;
+    }
+
+    public Map<Character, Integer> getFrequency() {
+        return frequency;
     }
 
 }
