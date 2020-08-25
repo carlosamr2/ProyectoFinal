@@ -10,6 +10,7 @@ import classes.Encryption;
 import classes.FileReader;
 import classes.FileWritter;
 import classes.FrequencyTable;
+import classes.Symbol;
 import java.io.File;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -58,6 +59,7 @@ public class EncryptionPane {
     Button encode = new Button("Encode");
     Button decode = new Button("Decode");
     boolean encoding;
+    Button choose = new Button("Choose new file");
 
     public EncryptionPane() {
         root = new BorderPane();
@@ -81,6 +83,7 @@ public class EncryptionPane {
 
     private void createOptionPanel() {
         TextField link = new TextField();
+        link.setEditable(false);
         link.setPrefWidth(120);
         optionPane.setHgap(20);
         ObservableList items = optionPane.getChildren();
@@ -92,7 +95,8 @@ public class EncryptionPane {
         normal.setSelected(true);
         Inverse.setToggleGroup(group);
         encode.setDisable(true);
-        items.addAll(controls, loadTxt, link, normal, Inverse, codify, encode, decode);
+        codify.setDisable(true);
+        items.addAll(controls, loadTxt, link, normal, Inverse, codify);
         root.setBottom(optionPane);
 
         loadTxt.setOnAction(e -> {
@@ -106,6 +110,7 @@ public class EncryptionPane {
                 FileReader txtData = new FileReader(file);
                 textFile = txtData.getTexto();
                 link.setText(file.toString());
+                codify.setDisable(false);
             }
         });
 
@@ -117,6 +122,15 @@ public class EncryptionPane {
             input.setDisable(false);
             flag = true;
             createDictionary();
+            items.clear();
+            items.addAll(choose, encode, decode);
+        });
+        
+        choose.setOnAction(e -> {
+           items.clear();
+           items.addAll(controls, loadTxt, link, normal, Inverse, codify);
+           codify.setDisable(true);
+           link.clear();
         });
 
         encode.setOnAction(e -> {
@@ -237,13 +251,14 @@ public class EncryptionPane {
         frequencyTable.add(l3, 2, 0);
         int cont = 1;
         if (flag == true) {
-            for (char c : encryption.getEd().getFt().getFrecuency().keySet()) {
-                int amount = encryption.getEd().getFt().getFrecuency().get(c);
-                String code = encryption.getEd().getMapEnc().get(c);
-                Label ca = new Label(String.valueOf(c) + "   ");
+            while(!encryption.getEd().getFt().getSymbols().isEmpty()) {
+                Symbol s = encryption.getEd().getFt().getSymbols().poll();
+//                int amount = s.getAmount();
+                String code = encryption.getEd().getMapEnc().get(s.getSign().charAt(0));
+                Label ca = new Label(s.getSign() + "   ");
                 ca.setPrefSize(45, 25);
                 ca.setAlignment(Pos.CENTER);
-                TextField am = new TextField(String.valueOf(amount));
+                TextField am = new TextField(String.valueOf(s.getAmount()));
                 am.setPrefSize(30, 15);
                 am.setEditable(false);
                 Label co = new Label("    " + code);

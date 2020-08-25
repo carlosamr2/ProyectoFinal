@@ -9,7 +9,7 @@ package classes;
  *
  * @author Bryan
  */
-public class Symbol {
+public class Symbol{
 
     private String sign; //Caracter
     private int amount; //Cantidad de repeticiones del caracter dentro del String
@@ -49,5 +49,6 @@ public class Symbol {
     public String toString() {
         return sign + ":     " + amount;
     }
+
 
 }
