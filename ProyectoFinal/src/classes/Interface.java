@@ -6,11 +6,14 @@
 package classes;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Orientation;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableView;
@@ -37,11 +40,15 @@ public class Interface {
     Button save=new Button("Guardar");
     RadioButton encode=new RadioButton("Codificar");
     RadioButton decode=new RadioButton("Decodificar");
+    CheckBox inverseCoding= new CheckBox("Invertir arbol");
     TextArea input=new TextArea();
     TextArea output=new TextArea();
     TextArea showText=new TextArea();
     TextArea showEncode=new TextArea();
     TableView frequencyTable=new TableView();
+    FrequencyTable ft;
+    EncriptedData ed;
+    Encryption e;
     
     public Interface() {
         BorderPane root=this.root2;
@@ -56,20 +63,47 @@ public class Interface {
         encode.setToggleGroup(group);
         encode.setSelected(true);
         decode.setToggleGroup(group);
-        items.addAll(controls,loadTxt,encode,decode,save);
+        items.addAll(controls,loadTxt,encode,decode,inverseCoding,save);
         root2.setTop(optionPane);
         
         loadTxt.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(final ActionEvent e) {
+            public void handle(final ActionEvent ev) {
                 final FileChooser fileChooser = new FileChooser();
                 File file = fileChooser.showOpenDialog(new Stage());
                 FileReader txtData=new FileReader(file);
                 showText.setText(txtData.texto);
+                
+                if(inverseCoding.isSelected()){
+                    ft = new FrequencyTable(false, txtData.texto);
+                }
+                else{
+                    ft = new FrequencyTable(true, txtData.texto);
+                }
+                ed = new EncriptedData(ft);
+                e = new Encryption(ed);
+                
+                showEncode.setText(e.encode(txtData.texto));
             }
-        });    
-    };
-    
+        }); 
+        
+        
+        save.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(final ActionEvent ev) {
+                FileChooser fileChooser = new FileChooser();
+ 
+                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+                fileChooser.getExtensionFilters().add(extFilter);
+
+                File file = fileChooser.showSaveDialog(new Stage());
+
+                if (file != null) {
+                    saveTextToFile(showEncode.getText(), file);
+                }
+            }
+        });
+    }
     public void createTranslator(){
         ObservableList items=translationPane.getChildren();
         items.addAll(input,output);
@@ -81,8 +115,13 @@ public class Interface {
         input.setOnKeyReleased(new EventHandler<KeyEvent>(){
             @Override
             public void handle(KeyEvent t){
-                output.setText(input.getText());
-        }
+                if(encode.isSelected()){
+                    output.setText(e.encode(input.getText()));        
+                }
+                if(decode.isSelected()){
+                    output.setText(e.decode(input.getText()));        
+                }
+            }
         });
     }
     
@@ -106,5 +145,14 @@ public class Interface {
     public BorderPane getRoot2() {
         return root2;
     }
-    
+        static void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
