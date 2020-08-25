@@ -52,21 +52,7 @@ public class ProyectoFinal extends Application {
         System.out.println("Texto decodificado: " + dec);
         
 //*****************************************************************************************************************************************
-        Button btn = new Button();
-        btn.setText("Say 'Hello World'");
-        File file = new File("text.txt");
-        FileReader reader = new FileReader(file);
-        FileWritter escribir = new FileWritter("demo.txt");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            
-            @Override
-            public void handle(ActionEvent event) {
-                System.out.println(reader.texto);
-                escribir.create();
-                escribir.write("hola mundo");
-                
-            }
-        });
+
         gui.createOptionPanel();
         gui.createTranslator();
         gui.createUploadPanel();

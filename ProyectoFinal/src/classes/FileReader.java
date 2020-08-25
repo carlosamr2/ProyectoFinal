@@ -41,6 +41,12 @@ public class FileReader {
         }
         return data;
     }
+
+    public String getTexto() {
+        return texto;
+    }
+    
+    
     
 
     
