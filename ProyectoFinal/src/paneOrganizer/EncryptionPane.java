@@ -11,6 +11,8 @@ import classes.FileReader;
 import classes.FileWritter;
 import classes.FrequencyTable;
 import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -190,7 +192,7 @@ public class EncryptionPane {
 //        items.addAll(showText, showEncode);
         root.setLeft(uploadPane);
         save.setOnAction(e -> {
-            final FileChooser fileChooser = new FileChooser();
+            FileChooser fileChooser = new FileChooser();
             FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text file (*.txt)", "*.txt");
             fileChooser.getExtensionFilters().add(extFilter);
             File file = fileChooser.showSaveDialog(new Stage());
@@ -198,15 +200,10 @@ public class EncryptionPane {
                 showAlert("Nombre de archivo no válido, intente de nuevo.");
             } else if (!file.toString().substring(file.toString().length() - 3).equals("txt")) {
                 showAlert("El formato del archivo debe ser txt.");
-            } else {
-                FileWritter txtData = new FileWritter(file.getName());
-                if (txtData.getExist() == true) {
-                    showAlert("Ya existe un archivo con el mismo nombre. Inténtelo nuevamente.");
-                } else {
-                    txtData.write(showEncode.getText());
+            } if (file != null) {
+                    saveTextToFile(showEncode.getText(), file);
                     showAlert("Archivo guardado con éxito");
                 }
-            }
         });
     }
 
@@ -272,5 +269,15 @@ public class EncryptionPane {
     public BorderPane getRoot() {
         return root;
     }
-
+    
+    static void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
