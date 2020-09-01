@@ -20,7 +20,7 @@ public class MainPane extends Application {
     public void start(Stage primaryStage) {
 
         EncryptionPane gui = new EncryptionPane();
-        Scene scene = new Scene(gui.getRoot(), 1200, 650);
+        Scene scene = new Scene(gui.getRoot(), 1000, 550);
 
         primaryStage.setTitle("Huffman Compression");
         primaryStage.setScene(scene);

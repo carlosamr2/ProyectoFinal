@@ -30,6 +30,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
@@ -43,10 +44,10 @@ public class EncryptionPane {
 
     private final BorderPane root;
     public static Encryption encryption;
-    FlowPane optionPane = new FlowPane();
-    FlowPane translationPane = new FlowPane(Orientation.HORIZONTAL);
-    FlowPane uploadPane = new FlowPane(Orientation.VERTICAL);
-    FlowPane frequencyPane = new FlowPane(Orientation.VERTICAL);
+    HBox optionPane = new HBox();
+    HBox translationPane = new HBox();
+    VBox uploadPane = new VBox();
+    VBox frequencyPane = new VBox();
     Button loadTxt = new Button("Upload file");
     Button codify = new Button("Codify");
     RadioButton normal = new RadioButton("Normal");
@@ -92,9 +93,9 @@ public class EncryptionPane {
         TextField link = new TextField();
         link.setEditable(false);
         link.setPrefWidth(120);
-        optionPane.setHgap(20);
+        optionPane.setSpacing(20);
         ObservableList items = optionPane.getChildren();
-        optionPane.setPadding(new Insets(0, 20, 0, 20));
+        optionPane.setPadding(new Insets(5, 20, 10, 20));
         optionPane.setAlignment(Pos.TOP_CENTER);
         Label controls = new Label("Controls: ");
         ToggleGroup group = new ToggleGroup();
@@ -184,8 +185,8 @@ public class EncryptionPane {
 
     private void createTranslator() {
         ObservableList items = translationPane.getChildren();
-        translationPane.setHgap(8);
-        translationPane.setPadding(new Insets(20, 5, 0, 10));
+        translationPane.setSpacing(8);
+        translationPane.setPadding(new Insets(5, 10, 5, 10));
         translationPane.setAlignment(Pos.TOP_CENTER);
         items.addAll(input, output);
         root.setCenter(translationPane);
@@ -194,8 +195,8 @@ public class EncryptionPane {
         input.setWrapText(true);
         output.setEditable(false);
         output.setWrapText(true);
-        input.setPrefSize(300, 450);//450
-        output.setPrefSize(300, 450);//450
+        input.setPrefSize(250, 250);
+        output.setPrefSize(250, 250);
         input.setOnKeyReleased(e -> {
             if (encoding == true) {
                 output.setText(encryption.encode(input.getText()));
@@ -206,8 +207,8 @@ public class EncryptionPane {
     }
 
     private void createUploadPanel() {
-        uploadPane.setVgap(15);
-        uploadPane.setPadding(new Insets(0, 0, 0, 10));
+        uploadPane.setSpacing(15);
+        uploadPane.setPadding(new Insets(10, 5, 5, 10));
         save = new Button("Save encoded text");
         save.setDisable(true);
         showText.setEditable(false);//Desactiva la opción de editar el nodo desde la interfaz
@@ -233,9 +234,9 @@ public class EncryptionPane {
 
     private void createDictionary() {
         frequencyPane.getChildren().clear();
-        frequencyPane.setPadding(new Insets(0, 5, 0, 0));
+        frequencyPane.setPadding(new Insets(10, 5, 10, 5));
         frequencyPane.setPrefWidth(250);
-        frequencyPane.setVgap(10);
+        frequencyPane.setSpacing(10);
         frequencyPane.setAlignment(Pos.TOP_CENTER);
         Label header = new Label("Frequence table\n");
         change = new Button("Change frequence");
