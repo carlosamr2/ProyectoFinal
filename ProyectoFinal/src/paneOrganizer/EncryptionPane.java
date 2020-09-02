@@ -31,6 +31,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
@@ -44,7 +45,7 @@ public class EncryptionPane {
 
     private final BorderPane root;
     public static Encryption encryption;
-    HBox optionPane = new HBox();
+    
     HBox translationPane = new HBox();
     VBox uploadPane = new VBox();
     VBox frequencyPane = new VBox();
@@ -82,10 +83,12 @@ public class EncryptionPane {
 
     private void createTitle() {
         Label title = new Label("Huffman Coding");
+        title.setFont(Font.font("Californian FB", FontPosture.ITALIC, 50));
+        title.setTextFill(Color.web("White"));
         HBox cTitle = new HBox(title);
-        title.setFont(Font.font("Blue", FontPosture.REGULAR, 40));
         cTitle.setAlignment(Pos.CENTER);
         cTitle.setMinHeight(70);
+        cTitle.setStyle("-fx-background-color:BBD196");
         root.setTop(cTitle);
     }
 
@@ -93,18 +96,24 @@ public class EncryptionPane {
         TextField link = new TextField();
         link.setEditable(false);
         link.setPrefWidth(120);
+        HBox optionPane = new HBox();
         optionPane.setSpacing(20);
+        optionPane.setPrefHeight(90);
         ObservableList items = optionPane.getChildren();
         optionPane.setPadding(new Insets(5, 20, 10, 20));
-        optionPane.setAlignment(Pos.TOP_CENTER);
+        optionPane.setAlignment(Pos.CENTER);
         Label controls = new Label("Controls: ");
+        controls.setTextFill(Color.web("White"));
         ToggleGroup group = new ToggleGroup();
         normal.setToggleGroup(group);
+        normal.setTextFill(Color.web("White"));
         normal.setSelected(true);
         Inverse.setToggleGroup(group);
+        Inverse.setTextFill(Color.web("White"));
         encode.setDisable(true);
         codify.setDisable(true);
         items.addAll(controls, loadTxt, link, normal, Inverse, codify);
+        optionPane.setStyle("-fx-background-color:BBD196");
         root.setBottom(optionPane);
 
         loadTxt.setOnAction(e -> {
@@ -189,6 +198,7 @@ public class EncryptionPane {
         translationPane.setPadding(new Insets(5, 10, 5, 10));
         translationPane.setAlignment(Pos.TOP_CENTER);
         items.addAll(input, output);
+        translationPane.setStyle("-fx-background-color:f1efe9");
         root.setCenter(translationPane);
         input.setEditable(false);
         input.setDisable(true);
@@ -219,6 +229,8 @@ public class EncryptionPane {
         showEncode.setPrefSize(200, 190);//225
         uploadPane.getChildren().addAll(showText, showEncode, save);
 //        items.addAll(showText, showEncode);
+        uploadPane.setStyle("-fx-background-color:E0ECE4");
+        uploadPane.setMaxWidth(250);
         root.setLeft(uploadPane);
         save.setOnAction(e -> {
             FileChooser fileChooser = new FileChooser();
@@ -292,6 +304,7 @@ public class EncryptionPane {
         frequencyTable.setAlignment(Pos.CENTER);
         frequencyTable.setGridLinesVisible(true);
         frequencyPane.getChildren().addAll(header, scroll, change);
+        frequencyPane.setStyle("-fx-background-color:E0ECE4");
         root.setRight(frequencyPane);
 
     }
@@ -307,7 +320,7 @@ public class EncryptionPane {
             writer.println(content);
             writer.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
