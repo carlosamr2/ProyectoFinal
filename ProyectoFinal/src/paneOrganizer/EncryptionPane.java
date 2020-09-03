@@ -8,7 +8,6 @@ package paneOrganizer;
 import classes.EncriptedData;
 import classes.Encryption;
 import classes.FileReader;
-import classes.FileWritter;
 import classes.FrequencyTable;
 import classes.Symbol;
 import java.io.File;
@@ -16,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -27,7 +25,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -45,7 +42,7 @@ public class EncryptionPane {
 
     private final BorderPane root;
     public static Encryption encryption;
-    
+
     HBox translationPane = new HBox();
     VBox uploadPane = new VBox();
     VBox frequencyPane = new VBox();
@@ -58,7 +55,7 @@ public class EncryptionPane {
     TextArea showText = new TextArea();
     TextArea showEncode = new TextArea();
     GridPane frequencyTable = new GridPane();
-    boolean flag;
+    boolean flagFrequence;
     String textFile;
     Button encode = new Button("Encode");
     Button decode = new Button("Decode");
@@ -68,7 +65,12 @@ public class EncryptionPane {
     public static char caracter2;
     public static int amount2;
     Button change;
-//    boolean flagAmount;
+    ObservableList items;
+    boolean changeChar;
+    Button executeChange;
+    boolean flagChange;
+//    char caracter;
+//    int amount;
 
     public EncryptionPane() {
         root = new BorderPane();
@@ -77,8 +79,18 @@ public class EncryptionPane {
         createTranslator();
         createUploadPanel();
         createDictionary();
-        flag = false;
+        flagFrequence = false;
         encoding = true;
+    }
+
+    private void setNodes() {
+        flagFrequence = false;
+        createDictionary();
+        input.clear();
+        output.clear();
+        showText.clear();
+        showEncode.clear();
+        save.setDisable(true);
     }
 
     private void createTitle() {
@@ -99,7 +111,7 @@ public class EncryptionPane {
         HBox optionPane = new HBox();
         optionPane.setSpacing(20);
         optionPane.setPrefHeight(90);
-        ObservableList items = optionPane.getChildren();
+        items = optionPane.getChildren();
         optionPane.setPadding(new Insets(5, 20, 10, 20));
         optionPane.setAlignment(Pos.CENTER);
         Label controls = new Label("Controls: ");
@@ -132,18 +144,7 @@ public class EncryptionPane {
         });
 
         codify.setOnAction(e -> {
-            encryption = createEncryption(normal.isSelected(), textFile,' ',0,false); // Se crea cifrado de Huffman a base del archivo seleccionado
-            showText.setText(textFile); //Muestra el contenido del arhivo
-            showEncode.setText(encryption.encode(textFile)); //Muestra el contenido codificado
-            input.setEditable(true); //Activa la edición del nodo input
-            input.setDisable(false);
-            flag = true;
-            save.setDisable(false);
-            createDictionary();
-            change.setDisable(false);
-            items.clear();
-            items.addAll(choose, encode, decode);
-
+            loadInfoText(' ', 0, false);
         });
 
         choose.setOnAction(e -> {
@@ -151,6 +152,8 @@ public class EncryptionPane {
             items.addAll(controls, loadTxt, link, normal, Inverse, codify);
             codify.setDisable(true);
             link.clear();
+            setNodes();
+
         });
 
         encode.setOnAction(e -> {
@@ -174,11 +177,33 @@ public class EncryptionPane {
         });
     }
 
+    public void disableButtons() {
+        save.setDisable(true);
+        choose.setDisable(true);
+        input.setDisable(true);
+        encode.setDisable(true);
+        decode.setDisable(true);
+    }
+
+    public void loadInfoText(char c, int i, boolean b) {
+        encryption = createEncryption(normal.isSelected(), textFile, c, i, b); // Se crea cifrado de Huffman a base del archivo seleccionado
+        showText.setText(textFile); //Muestra el contenido del arhivo
+        showEncode.setText(encryption.encode(textFile)); //Muestra el contenido codificado
+        input.setEditable(true); //Activa la edición del nodo input
+        input.setDisable(false);
+        flagFrequence = true;
+        save.setDisable(false);
+        createDictionary();
+        change.setDisable(false);
+        choose.setDisable(false);
+        decode.setDisable(false);
+        items.clear();
+        items.addAll(choose, encode, decode);
+
+    }
+
     public static Encryption createEncryption(boolean isNormal, String text, char c, int i, boolean edit) { //Se crea una instancia de tipo Encryption
-        FrequencyTable ft = new FrequencyTable(isNormal, text);
-        if (edit) {
-            ft.getFrequency().put(c, i);
-        }
+        FrequencyTable ft = new FrequencyTable(isNormal, text, c, i, edit);
         EncriptedData ed = new EncriptedData(ft);
         Encryption e = new Encryption(ed);
         return e;
@@ -193,11 +218,11 @@ public class EncryptionPane {
     }
 
     private void createTranslator() {
-        ObservableList items = translationPane.getChildren();
+        ObservableList items2 = translationPane.getChildren();
         translationPane.setSpacing(8);
         translationPane.setPadding(new Insets(5, 10, 5, 10));
         translationPane.setAlignment(Pos.TOP_CENTER);
-        items.addAll(input, output);
+        items2.addAll(input, output);
         translationPane.setStyle("-fx-background-color:f1efe9");
         root.setCenter(translationPane);
         input.setEditable(false);
@@ -225,8 +250,8 @@ public class EncryptionPane {
         showText.setWrapText(true);//El texto dentro del nodo se adapta al tamaño del mismo
         showEncode.setEditable(false);
         showEncode.setWrapText(true);
-        showText.setPrefSize(200, 190);//225
-        showEncode.setPrefSize(200, 190);//225
+        showText.setPrefSize(200, 190);
+        showEncode.setPrefSize(200, 190);
         uploadPane.getChildren().addAll(showText, showEncode, save);
 //        items.addAll(showText, showEncode);
         uploadPane.setStyle("-fx-background-color:E0ECE4");
@@ -245,19 +270,31 @@ public class EncryptionPane {
     }
 
     private void createDictionary() {
+        frequencyTable.getChildren().clear();
         frequencyPane.getChildren().clear();
         frequencyPane.setPadding(new Insets(10, 5, 10, 5));
-        frequencyPane.setPrefWidth(250);
+        frequencyPane.setPrefWidth(200);
         frequencyPane.setSpacing(10);
         frequencyPane.setAlignment(Pos.TOP_CENTER);
         Label header = new Label("Frequence table\n");
+        header.setFont(Font.font("Californian FB", FontPosture.ITALIC, 20));
+        header.setTextFill(Color.web("DarkCyan"));
         change = new Button("Change frequence");
+        executeChange = new Button("Accept");
+        executeChange.setOnAction(e -> {
+            setNodes();
+            loadInfoText(caracter2, amount2, true);
+            showAlert("La frecuencia de ha modificado con éxito.");
+        });
         change.setDisable(true);
         change.setOnAction(e -> {
-            FrequencePane fp = new FrequencePane(textFile,normal.isSelected());
+            disableButtons();
+            FrequencePane fp = new FrequencePane(textFile, normal.isSelected());
+            frequencyPane.getChildren().remove(change);
+            frequencyPane.getChildren().add(executeChange);
         });
         ScrollPane scroll = new ScrollPane(frequencyTable);
-        scroll.setPrefSize(160, 325);//425
+        scroll.setMinSize(200, 450);//425
         Label l1 = new Label("Symbol ");
         l1.setPrefSize(45, 25);
         l1.setAlignment(Pos.CENTER);
@@ -267,14 +304,14 @@ public class EncryptionPane {
         l2.setAlignment(Pos.CENTER);
         l2.setStyle("-fx-background-color:Lavender");
         Label l3 = new Label("Code");
-        l3.setPrefSize(70, 25);
+        l3.setPrefSize(100, 25);
         l3.setAlignment(Pos.CENTER);
         l3.setStyle("-fx-background-color:Lavender");
         frequencyTable.add(l1, 0, 0);
         frequencyTable.add(l2, 1, 0);
         frequencyTable.add(l3, 2, 0);
         int cont = 1;
-        if (flag == true) {
+        if (flagFrequence == true) {
             while (!encryption.getEd().getFt().getSymbols().isEmpty()) {
                 Symbol s = encryption.getEd().getFt().getSymbols().poll();
                 String code = encryption.getEd().getMapEnc().get(s.getSign().charAt(0));
@@ -304,6 +341,11 @@ public class EncryptionPane {
         frequencyTable.setAlignment(Pos.CENTER);
         frequencyTable.setGridLinesVisible(true);
         frequencyPane.getChildren().addAll(header, scroll, change);
+//        if(flagChange){
+//            frequencyPane.getChildren().addAll(header, scroll, change);
+//        }else{
+//            frequencyPane.getChildren().addAll(header, scroll, executeChange);
+//        }
         frequencyPane.setStyle("-fx-background-color:E0ECE4");
         root.setRight(frequencyPane);
 
@@ -324,7 +366,4 @@ public class EncryptionPane {
         }
     }
 
-
-    
-    
 }

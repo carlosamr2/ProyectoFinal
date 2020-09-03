@@ -16,9 +16,15 @@ public class FrequencyTable {
     private String text; //Texto de referencia para generar la tabla de frecuencia
     private final Map<Character, Integer> frequency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
     private PriorityQueue<BinaryNode<Symbol>> nodes;//Contenedor que almacenará las instancias ordenadas de la clase Symbol contenidas en un BinaryNode
-    private PriorityQueue<Symbol> symbols;
+    private final PriorityQueue<Symbol> symbols;
+    private final char caracter;
+    private final int amount;
+    private final boolean edit;
 
-    public FrequencyTable(boolean sense, String text) {
+    public FrequencyTable(boolean sense, String text, char c, int i, boolean edit) {
+        caracter = c;
+        amount = i;
+        this.edit = edit;
         this.normalSense = sense;
         this.text = text;
         frequency = fillFrecuency();
@@ -35,14 +41,17 @@ public class FrequencyTable {
                 m.put(text.charAt(i), 1);
             }
         }
+        if (edit) {
+            m.put(caracter, amount);
+        }
         return m;
     }
     
-    public void refreshFrequency(char c,int i){
-        this.frequency.put(c, i);
-        symbols = fillSymbols();
-        nodes = fillNodes();
-    }
+//    public void refreshFrequency(char c,int i){
+//        this.frequency.put(c, i);
+//        symbols = fillSymbols();
+//        nodes = fillNodes();
+//    }
     
     private PriorityQueue<Symbol> fillSymbols(){
         PriorityQueue<Symbol> pr = new PriorityQueue<>((a,b) -> {

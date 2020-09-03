@@ -30,8 +30,10 @@ public class FrequencePane {
     private final Stage stage;
     private final Scene scene;
     private final Map<Character, Integer> freq;
-    public static char caracter;
-    public static int amount;
+//    public static char caracter;
+//    public static int amount;
+    private char caracter;
+    private int amount;
     private final String text;
     private final boolean b;
 
@@ -68,8 +70,8 @@ public class FrequencePane {
         Button accept = new Button("Accept");
         accept.setOnAction(e -> {
             if (isInteger(tam.getText())) {
-//                encryption.getEd().getFt().refreshFrequency(caracter, amount);
-                encryption = EncryptionPane.createEncryption(b,text, caracter, amount, true);
+                EncryptionPane.caracter2 = cb.getValue();
+                EncryptionPane.amount2 = Integer.parseInt(tam.getText());
                 stage.close();
             } else {
                 showAlert("El número ingresado no es válido. Inténtelo nuevamente.");
