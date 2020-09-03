@@ -176,6 +176,7 @@ public class EncryptionPane {
                     stage.close();
                     music.stop();
                     showAlert("¡Buen juego!\n¡Haz desactivado la bomba!");
+                    timer.stop();
                 }
             });
             
@@ -192,6 +193,7 @@ public class EncryptionPane {
             stage.show();
             stage.setOnCloseRequest((WindowEvent we) -> {
                 root.setRight(frequencyPane);
+                timer.stop();
                 change.setDisable(false);
                 music.stop();
             }); 

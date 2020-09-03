@@ -55,6 +55,7 @@ public class Clock extends Pane{
         S=tap+"";
         label.setText(S);
         if(tap==0){
+            animation.pause();
             animation.stop();
             stage.close();
             Alert a = new Alert(AlertType.ERROR);
@@ -62,6 +63,7 @@ public class Clock extends Pane{
             root.setRight(frequencyPane);
             boton.setDisable(false);
             music.stop();
+            this.stop();
             a.show();
         }
     }
@@ -70,5 +72,8 @@ public class Clock extends Pane{
         return tap;
     }
     
-    
+    public void stop(){
+        this.animation=new Timeline();
+        tap=100;
+    }
 }
