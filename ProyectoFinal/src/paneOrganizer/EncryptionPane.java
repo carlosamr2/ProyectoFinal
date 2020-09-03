@@ -167,7 +167,7 @@ public class EncryptionPane {
             pass.setId("pass");
             
             Stage stage = new Stage();
-            Clock timer=new Clock(stage);
+            Clock timer=new Clock(stage,change);
             TextField code=new TextField();
             code.setOnKeyReleased(x -> {
                 if (code.getText().equals(encryptedPassword)) {

@@ -10,6 +10,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -31,12 +32,13 @@ public class Clock extends Pane{
     private String S="";
     private Stage stage;
     Label label=new Label("100");
-    
-    public Clock(Stage stage){
+    Button boton;
+    public Clock(Stage stage,Button boton){
         label.setFont(javafx.scene.text.Font.font(100));
         label.setTextFill(Color.web("#0076a3"));
         getChildren().add(label);
         this.stage=stage;
+        this.boton=boton;
         animation=new Timeline(new KeyFrame(Duration.seconds(1),e->timeLabel()));
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
@@ -53,6 +55,7 @@ public class Clock extends Pane{
             stage.close();
             Alert a = new Alert(AlertType.ERROR);
             a.setHeaderText("¡Oh no!\nNo pudiste desactivar la bomba, suerte para la próxima");
+            boton.setDisable(false);
             music.stop();
             a.show();
         }
