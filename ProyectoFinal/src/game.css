@@ -1,0 +1,23 @@
+#gameLabel {
+   -fx-font-size: 32px;
+   -fx-text-fill: red;
+   -fx-font-family: "Arial Black";
+}
+#description {
+   -fx-font-size: 22px;
+   -fx-text-fill: white;
+   -fx-font-family: "Arial Black";
+}
+#pass {
+   -fx-font-size: 32px;
+   -fx-text-fill: green;
+   -fx-font-family: "Arial Black";
+}
+#time {
+   -fx-font-size: 32px;
+   -fx-text-fill: white;
+   -fx-font-family: "Arial Black";
+}
+.root {
+     -fx-background-image: url("/bomb.jpg");
+}

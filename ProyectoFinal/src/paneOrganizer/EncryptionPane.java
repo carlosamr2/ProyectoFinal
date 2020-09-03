@@ -9,13 +9,16 @@ import classes.EncriptedData;
 import classes.Encryption;
 import classes.FileReader;
 import classes.FrequencyTable;
+import classes.Sound;
 import classes.Symbol;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Random;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -33,6 +36,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  *
@@ -42,12 +46,13 @@ public class EncryptionPane {
 
     private final BorderPane root;
     public static Encryption encryption;
-
+    static Sound music=new Sound();
     HBox translationPane = new HBox();
     VBox uploadPane = new VBox();
     VBox frequencyPane = new VBox();
     Button loadTxt = new Button("Upload file");
     Button codify = new Button("Codify");
+    Button game = new Button("Play a game!");
     RadioButton normal = new RadioButton("Normal");
     RadioButton Inverse = new RadioButton("Inverse");
     TextArea input = new TextArea();
@@ -64,7 +69,7 @@ public class EncryptionPane {
     Button save;
     public static char caracter;
     public static int amount;
-    Button change;
+    Button change= new Button("Change frequence");;
     ObservableList items;
     boolean changeChar;
     Button executeChange;
@@ -140,6 +145,59 @@ public class EncryptionPane {
                 codify.setDisable(false);
             }
         });
+        game.setOnAction(e -> {
+            change.setDisable(true);
+            music.play();
+            String[] parts = textFile.split(" ");
+            Random rand = new Random(); 
+            String password=parts[rand.nextInt(parts.length)];     //palabra      
+            String encryptedPassword=encryption.encode(password);  //con esto consigo la traduccion de la palabra
+
+            VBox caja= new VBox();
+            
+            
+            
+            BorderPane game=new BorderPane();
+            Label gameLabel=new Label("¡Desactiva la bomba!");
+            Label gameLabel2=new Label("El código es la traducción de:");
+            Label pass=new Label(password);
+            
+            gameLabel.setId("gameLabel");
+            gameLabel2.setId("description");
+            pass.setId("pass");
+            
+            Stage stage = new Stage();
+            Clock timer=new Clock(stage);
+            TextField code=new TextField();
+            code.setOnKeyReleased(x -> {
+                if (code.getText().equals(encryptedPassword)) {
+                    root.setRight(frequencyPane);
+                    change.setDisable(false);
+                    stage.close();
+                    music.stop();
+                    showAlert("¡Buen juego!\n¡Haz desactivado la bomba!");
+                }
+            });
+            
+            caja.getChildren().addAll(timer,gameLabel,gameLabel2,pass,code);
+            
+            game.setLeft(frequencyPane);
+            game.setRight(caja);
+            
+            
+            stage.setTitle("Secret Game!");
+            Scene gameScene=new Scene(game, 1270, 720);
+            stage.setScene(gameScene);
+            gameScene.getStylesheets().add(getClass().getResource("/game.css").toExternalForm());
+            stage.show();
+            stage.setOnCloseRequest((WindowEvent we) -> {
+                root.setRight(frequencyPane);
+                change.setDisable(false);
+                music.stop();
+            }); 
+        
+            
+        });
 
         codify.setOnAction(e -> {
             loadInfoText(' ', 0, false);
@@ -196,7 +254,7 @@ public class EncryptionPane {
         choose.setDisable(false);
         decode.setDisable(false);
         items.clear();
-        items.addAll(choose, encode, decode);
+        items.addAll(choose, encode, decode,game);
     }
 
     public static Encryption createEncryption(boolean isNormal, String text, char c, int i, boolean edit) { //Se crea una instancia de tipo Encryption
@@ -275,7 +333,6 @@ public class EncryptionPane {
         Label header = new Label("Frequence table\n");
         header.setFont(Font.font("Californian FB", FontPosture.ITALIC, 20));
         header.setTextFill(Color.web("DarkCyan"));
-        change = new Button("Change frequence");
         executeChange = new Button("Accept");
         executeChange.setOnAction(e -> {
             setNodes();
