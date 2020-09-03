@@ -31,14 +31,18 @@ public class Clock extends Pane{
     private int tap=100;
     private String S="";
     private Stage stage;
+    private BorderPane root;
+    private VBox frequencyPane;
     Label label=new Label("100");
     Button boton;
-    public Clock(Stage stage,Button boton){
+    public Clock(Stage stage,Button boton,BorderPane root,VBox frequencyPane){
         label.setFont(javafx.scene.text.Font.font(100));
         label.setTextFill(Color.web("#0076a3"));
         getChildren().add(label);
         this.stage=stage;
         this.boton=boton;
+        this.root=root;
+        this.frequencyPane=frequencyPane;
         animation=new Timeline(new KeyFrame(Duration.seconds(1),e->timeLabel()));
         animation.setCycleCount(Timeline.INDEFINITE);
         animation.play();
@@ -55,6 +59,7 @@ public class Clock extends Pane{
             stage.close();
             Alert a = new Alert(AlertType.ERROR);
             a.setHeaderText("¡Oh no!\nNo pudiste desactivar la bomba, suerte para la próxima");
+            root.setRight(frequencyPane);
             boton.setDisable(false);
             music.stop();
             a.show();
