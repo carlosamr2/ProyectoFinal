@@ -50,5 +50,5 @@ public class Encryption {
     public EncriptedData getEd() {
         return ed;
     }
-    
+
 }

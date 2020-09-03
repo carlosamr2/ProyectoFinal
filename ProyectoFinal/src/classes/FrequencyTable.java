@@ -16,10 +16,10 @@ public class FrequencyTable {
     private String text; //Texto de referencia para generar la tabla de frecuencia
     private final Map<Character, Integer> frequency;//Contenedor donde se almacenarán los caracteres del texto con su respectiva cantidad de repeticiones
     private PriorityQueue<BinaryNode<Symbol>> nodes;//Contenedor que almacenará las instancias ordenadas de la clase Symbol contenidas en un BinaryNode
-    private final PriorityQueue<Symbol> symbols;
-    private final char caracter;
-    private final int amount;
-    private final boolean edit;
+    private final PriorityQueue<Symbol> symbols;//Cola usada para la creacion de la tabla de frecuencia en la interfa
+    private final char caracter;//Caracter que se modifcará 
+    private final int amount;//Nueva frecuencia del caracter    
+    private final boolean edit;//false si se crea, true si se altera
 
     public FrequencyTable(boolean sense, String text, char c, int i, boolean edit) {
         caracter = c;
@@ -46,26 +46,20 @@ public class FrequencyTable {
         }
         return m;
     }
-    
-//    public void refreshFrequency(char c,int i){
-//        this.frequency.put(c, i);
-//        symbols = fillSymbols();
-//        nodes = fillNodes();
-//    }
-    
-    private PriorityQueue<Symbol> fillSymbols(){
-        PriorityQueue<Symbol> pr = new PriorityQueue<>((a,b) -> {
-            if(a.getAmount() != b.getAmount())
-                return a.getAmount()-b.getAmount();
-            else
+
+    private PriorityQueue<Symbol> fillSymbols() {//Crea Symbols
+        PriorityQueue<Symbol> pr = new PriorityQueue<>((a, b) -> {
+            if (a.getAmount() != b.getAmount()) {
+                return a.getAmount() - b.getAmount();
+            } else {
                 return a.getSign().compareTo(b.getSign());
+            }
         });
         this.frequency.keySet().forEach((c) -> {
             pr.offer(new Symbol(String.valueOf(c), this.frequency.get(c)));
         });
         return pr;
     }
-    
 
     private PriorityQueue<BinaryNode<Symbol>> fillNodes() { //Crea la cola nodes
         PriorityQueue<BinaryNode<Symbol>> p = new PriorityQueue<>((c1, c2) -> {

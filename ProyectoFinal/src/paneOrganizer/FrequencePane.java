@@ -30,16 +30,8 @@ public class FrequencePane {
     private final Stage stage;
     private final Scene scene;
     private final Map<Character, Integer> freq;
-//    public static char caracter;
-//    public static int amount;
-    private char caracter;
-    private int amount;
-    private final String text;
-    private final boolean b;
 
-    public FrequencePane(String text,boolean b) {
-        this.text = text;
-        this.b = b;
+    public FrequencePane() {
         this.freq = encryption.getEd().getFt().getFrequency();
         VBox root = createRoot();
         root.setAlignment(Pos.TOP_CENTER);
@@ -70,8 +62,8 @@ public class FrequencePane {
         Button accept = new Button("Accept");
         accept.setOnAction(e -> {
             if (isInteger(tam.getText())) {
-                EncryptionPane.caracter2 = cb.getValue();
-                EncryptionPane.amount2 = Integer.parseInt(tam.getText());
+                EncryptionPane.caracter = cb.getValue();
+                EncryptionPane.amount = Integer.parseInt(tam.getText());
                 stage.close();
             } else {
                 showAlert("El número ingresado no es válido. Inténtelo nuevamente.");
@@ -80,7 +72,7 @@ public class FrequencePane {
         HBox nAmount = new HBox(lam, tam);
         nAmount.setAlignment(Pos.CENTER);
         nAmount.setSpacing(40);
-        VBox v = new VBox(hCaracter,oAmount,nAmount,accept);
+        VBox v = new VBox(hCaracter, oAmount, nAmount, accept);
         tam.setDisable(true);
         accept.setDisable(true);
         cb.setOnAction(e -> {
@@ -102,18 +94,6 @@ public class FrequencePane {
 
     public Scene getScene() {
         return scene;
-    }
-
-    public Map<Character, Integer> getFreq() {
-        return freq;
-    }
-
-    public char getCaracter() {
-        return caracter;
-    }
-
-    public int getAmount() {
-        return amount;
     }
 
 }
